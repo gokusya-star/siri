@@ -41,3 +41,60 @@ with st.form(key='form'):
         print(name,slct,", ".join(prime))
     #print(f'submit_btn: {submit_btn}')
     #print(f'cancel_btn: {cancel_btn}')
+
+words ={'あひる','いじわる','うなる','えくあどる','おこる',
+'かさばる','きりんびーる','くすぐる','ける','こおる',
+'さる','しる','すとーる','せーる','そーる',
+'たいむとんねる','ちらかる','つくる','てーる','とーる',
+'なぐる','にげる','ぬる','ねじる','のる',
+'はれる','ひっぱる','ふくらむ','へる','ほる',
+'まる','みる','むーどる','めもる','もる',
+'やせる','ゆにばーさる','よくばる',
+'らむさーる','りにゅーある','るーる','るごーる','るのわーる',
+'るーぶる','れんたるさいくる','ろーる','わびる',}
+
+hiragana_last = "しりとり"
+used_hiragana = []
+used_hiragana.append(hiragana_last)
+
+with st.form(key='ketu'):
+    hiragana_now = st.text_input('しりとり')
+    submit_bt = st.form_submit_button('送信')
+    if submit_bt:
+        if hiragana_now[0] != hiragana_last[-1]:
+            if hiragana_now[-1] == "ー":
+                if hiragana_now[0] != hiragana_last[-2]:
+                    used_hiragana.append(hiragana_now)
+                    hiragana_last = hiragana_now
+            else:
+                st.text("私: 最初の文字が間違っていますよ。私の勝ちです。")
+        elif hiragana_now in used_hiragana:
+            st.text("私: その単語は既に使われていますよ。私の勝ちです。")
+        elif hiragana_now[-1] == "ん":
+            st.text("私: それは「ん」で終わる単語ですよ。私の勝ちです。")
+        else:
+            used_hiragana.append(hiragana_now)
+            hiragana_last = hiragana_now
+            #AIのターン
+            found = False
+            line = False
+            if hiragana_now[-1] == "ー":
+                for word in words:
+                    if word.startswith(hiragana_last[-2]):
+                        st.text("私:",word)
+                        line = True
+                        found = True
+                        words.remove(word)
+                        used_hiragana.append(word)
+                        hiragana_last = word
+            else:
+                if not line:
+                    for word in words:
+                        if word.startswith(hiragana_last[-1]):
+                            st.text("私:",word)
+                            found = True
+                            words.remove(word)
+                            used_hiragana.append(word)
+                            hiragana_last = word
+            if not found:
+                st.text("私: 思いつきません。私の負けです。")
