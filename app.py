@@ -42,59 +42,61 @@ with st.form(key='form'):
     #print(f'submit_btn: {submit_btn}')
     #print(f'cancel_btn: {cancel_btn}')
 
-words ={'あひる','いじわる','うなる','えくあどる','おこる',
-'かさばる','きりんびーる','くすぐる','ける','こおる',
-'さる','しる','すとーる','せーる','そーる',
-'たいむとんねる','ちらかる','つくる','てーる','とーる',
-'なぐる','にげる','ぬる','ねじる','のる',
-'はれる','ひっぱる','ふくらむ','へる','ほる',
-'まる','みる','むーどる','めもる','もる',
-'やせる','ゆにばーさる','よくばる',
-'らむさーる','りにゅーある','るーる','るごーる','るのわーる',
-'るーぶる','れんたるさいくる','ろーる','わびる',}
+# セッション初期化
+if "used_hiragana" not in st.session_state:
+    st.session_state.used_hiragana = ["しりとり"]
+if "hiragana_last" not in st.session_state:
+    st.session_state.hiragana_last = "しりとり"
+if "words" not in st.session_state:
+    st.session_state.words = {'あひる','いじわる','うなる','えくあどる','おこる',
+    'かさばる','きりんびーる','くすぐる','ける','こおる',
+    'さる','しる','すとーる','せーる','そーる',
+    'たいむとんねる','ちらかる','つくる','てーる','とーる',
+    'なぐる','にげる','ぬる','ねじる','のる',
+    'はれる','ひっぱる','ふくらむ','へる','ほる',
+    'まる','みる','むーどる','めもる','もる',
+    'やせる','ゆにばーさる','よくばる',
+    'らむさーる','りにゅーある','るーる','るごーる','るのわーる',
+    'るーぶる','れんたるさいくる','ろーる','わびる',}
 
-hiragana_last = "しりとり"
-used_hiragana = []
-used_hiragana.append(hiragana_last)
+st.title("しりとり")
 
 with st.form(key='ketu'):
     hiragana_now = st.text_input('しりとり')
     submit_bt = st.form_submit_button('送信')
-    if submit_bt:
-        if hiragana_now[0] != hiragana_last[-1]:
-            if hiragana_now[-1] == "ー":
-                if hiragana_now[0] != hiragana_last[-2]:
-                    used_hiragana.append(hiragana_now)
-                    hiragana_last = hiragana_now
-            else:
-                st.text("AI: 最初の文字が間違っていますよ。私の勝ちです。")
-        elif hiragana_now in used_hiragana:
-            st.text("AI: その単語は既に使われていますよ。私の勝ちです。")
+
+    if submit_bt and hiragana_now:
+        last = st.session_state.hiragana_last
+        used = st.session_state.used_hiragana
+        words = st.session_state.words
+
+        # 「ー」で終わる場合は一つ前の文字を採用
+        last_char = last[-2] if last[-1] == "ー" else last[-1]
+
+        if hiragana_now[0] != last_char:
+            st.error("AI: 最初の文字が間違っていますよ。私の勝ちです。")
+        elif hiragana_now in used:
+            st.error("AI: その単語は既に使われていますよ。私の勝ちです。")
         elif hiragana_now[-1] == "ん":
-            st.text("AI: それは「ん」で終わる単語ですよ。私の勝ちです。")
+            st.error("AI: それは「ん」で終わる単語ですよ。私の勝ちです。")
         else:
-            used_hiragana.append(hiragana_now)
-            hiragana_last = hiragana_now
-            #AIのターン
+            # ユーザーの単語を追加
+            used.append(hiragana_now)
+            st.session_state.hiragana_last = hiragana_now
+
+            # AIのターン
+            last_char = hiragana_now[-2] if hiragana_now[-1] == "ー" else hiragana_now[-1]
             found = False
-            line = False
-            if hiragana_now[-1] == "ー":
-                for word in words:
-                    if word.startswith(hiragana_last[-2]):
-                        st.text(f"AI:{word}")
-                        line = True
-                        found = True
-                        words.remove(word)
-                        used_hiragana.append(word)
-                        hiragana_last = word
-            else:
-                if not line:
-                    for word in words:
-                        if word.startswith(hiragana_last[-1]):
-                            st.text(f"AI:{word}")
-                            found = True
-                            words.remove(word)
-                            used_hiragana.append(word)
-                            hiragana_last = word
+            for word in list(words):
+                if word.startswith(last_char):
+                    st.success(f"AI: {word}")
+                    used.append(word)
+                    words.remove(word)
+                    st.session_state.hiragana_last = word
+                    found = True
+                    break
             if not found:
-                st.text("AI: 思いつきません。私の負けです。")
+                st.info("AI: 思いつきません。私の負けです。")
+
+# 使用済み単語を表示
+st.write("これまでの単語:", " → ".join(st.session_state.used_hiragana))
