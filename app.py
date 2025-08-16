@@ -3,7 +3,7 @@ import random
 from PIL import Image
 
 #文字
-st.title("しりとり")
+st.title("ごくしゃ")
 
 image = Image.open('タイトルなし.png')
 st.image(image, width=200)
