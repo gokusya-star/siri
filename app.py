@@ -67,11 +67,11 @@ with st.form(key='ketu'):
                     used_hiragana.append(hiragana_now)
                     hiragana_last = hiragana_now
             else:
-                st.text("私: 最初の文字が間違っていますよ。私の勝ちです。")
+                st.text("AI: 最初の文字が間違っていますよ。私の勝ちです。")
         elif hiragana_now in used_hiragana:
-            st.text("私: その単語は既に使われていますよ。私の勝ちです。")
+            st.text("AI: その単語は既に使われていますよ。私の勝ちです。")
         elif hiragana_now[-1] == "ん":
-            st.text("私: それは「ん」で終わる単語ですよ。私の勝ちです。")
+            st.text("AI: それは「ん」で終わる単語ですよ。私の勝ちです。")
         else:
             used_hiragana.append(hiragana_now)
             hiragana_last = hiragana_now
@@ -81,7 +81,7 @@ with st.form(key='ketu'):
             if hiragana_now[-1] == "ー":
                 for word in words:
                     if word.startswith(hiragana_last[-2]):
-                        st.text("私:",word)
+                        st.text(f"AI:{word}")
                         line = True
                         found = True
                         words.remove(word)
@@ -91,10 +91,10 @@ with st.form(key='ketu'):
                 if not line:
                     for word in words:
                         if word.startswith(hiragana_last[-1]):
-                            st.text("私:",word)
+                            st.text(f"AI:{word}")
                             found = True
                             words.remove(word)
                             used_hiragana.append(word)
                             hiragana_last = word
             if not found:
-                st.text("私: 思いつきません。私の負けです。")
+                st.text("AI: 思いつきません。私の負けです。")
