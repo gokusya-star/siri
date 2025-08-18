@@ -127,12 +127,13 @@ with st.form(key='ketu'):
             found = False
             for word in list(words):
                 if word.startswith(last_char):
-                    st.success(f"AI: {word}")
-                    used.append(word)
-                    words.remove(word)
-                    st.session_state.hiragana_last = word
-                    found = True
-                    break
+                    if not words in used:
+                        st.success(f"AI: {word}")
+                        used.append(word)
+                        words.remove(word)
+                        st.session_state.hiragana_last = word
+                        found = True
+                        break
             if not found:
                 st.info("AI: 思いつきません。私の負けです。")
 
