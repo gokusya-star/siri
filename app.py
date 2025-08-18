@@ -100,7 +100,8 @@ if "words" not in st.session_state:
 st.session_state.words.update(additional_words)
 
 
-st.title("しりとり")
+st.title("しりとり  V.2")
+st.text("ひらがなで入力してください。")
 
 with st.form(key='ketu'):
     hiragana_now = st.text_input('しりとり')
