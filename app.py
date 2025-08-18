@@ -27,7 +27,7 @@ if "used_hiragana" not in st.session_state:
 if "hiragana_last" not in st.session_state:
     st.session_state.hiragana_last = "しりとり"
 if "words" not in st.session_state:
-    additional_words = {
+    st.session_state.words = {
         'あげる','あらわる','ある',
         'いる','いじる','いれる',
         'うつる','うねる','うける',
@@ -95,10 +95,6 @@ if "words" not in st.session_state:
         'ぺだる','ぺっとぼとる','ぺんてる',
         'ぽにーてーる','ぽーる','ぽーたぶる'
     }
-
-# 既存の words に追加する場合
-st.session_state.words.update(additional_words)
-
 
 st.title("しりとり  V.2")
 st.text("ひらがなで入力してください。")
