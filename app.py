@@ -96,7 +96,7 @@ if "words" not in st.session_state:
         'ぽにーてーる','ぽーる','ぽーたぶる'
     }
 
-st.title("しりとり  V.2")
+st.title("しりとり  V2.1")
 st.text("ひらがなで入力してください。")
 
 with st.form(key='ketu'):
