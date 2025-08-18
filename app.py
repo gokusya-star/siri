@@ -127,7 +127,9 @@ with st.form(key='ketu'):
             found = False
             for word in list(words):
                 if word.startswith(last_char):
-                    if not words in used:
+                    if words in used:
+                        pass
+                    else:
                         st.success(f"AI: {word}")
                         used.append(word)
                         words.remove(word)
