@@ -2,8 +2,10 @@ import streamlit as st
 import random
 from PIL import Image
 from janome.tokenizer import Tokenizer
+import pykakasi
 
 tokenizer = Tokenizer()
+kks = pykakasi.kakasi()
 
 #文字
 st.title("ごくしゃ")
@@ -107,11 +109,12 @@ st.title("しりとり  V3.0")
 st.text("ひらがなで入力してください。")
 
 with st.form(key='ketu'):
-    hiragana_now = st.text_input('しりとり')
+    imp_moji = kks.convert(st.text_input('しりとり'))
+    hiragana_now = "".join([r['hira'] for r in imp_moji])
     submit_bt = st.form_submit_button('送信')
 
     if submit_bt and hiragana_now:
-        if in_dictionary(hiragana_now):
+        if in_dictionary(imp_moji):
             last = st.session_state.hiragana_last
             used = st.session_state.used_hiragana
             words = st.session_state.words
