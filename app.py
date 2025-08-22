@@ -121,7 +121,7 @@ def in_dictionary(word: str) -> bool:
         return True
     return False
 
-st.title("しりとり  V5.0")
+st.title("しりとり  V5.1")
 st.text("ひらがな、カタカナ、漢字のいずれかで入力してください。")
 
 with st.form(key='ketu'):
