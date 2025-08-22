@@ -30,6 +30,7 @@ with st.form(key='form'):
 # セッション初期化
 if "used_hiragana" not in st.session_state:
     st.session_state.used_hiragana = ["しりとり"]
+    st.session_state.hiragana = ["しりとり"]
 if "hiragana_last" not in st.session_state:
     st.session_state.hiragana_last = "しりとり"
 if "words" not in st.session_state:
@@ -132,6 +133,7 @@ with st.form(key='ketu'):
         if in_dictionary(iuput_moji):
             last = st.session_state.hiragana_last
             used = st.session_state.used_hiragana
+            hira = st.session_state.hiragana
             words = st.session_state.words
 
             # 「ー」で終わる場合は一つ前の文字を採用
@@ -146,6 +148,7 @@ with st.form(key='ketu'):
             else:
                 # ユーザーの単語を追加
                 used.append(iuput_moji)
+                used.append(hiragana_now)
                 st.session_state.hiragana_last = hiragana_now
 
                 # AIのターン
@@ -153,7 +156,7 @@ with st.form(key='ketu'):
                 found = False
                 for word in list(words):
                     if word.startswith(last_char):
-                        if not word in used:
+                        if not word in hira:
                             st.success(f"AI: {word}")
                             used.append(word)
                             words.remove(word)
@@ -166,4 +169,5 @@ with st.form(key='ketu'):
             st.error("AI: そんな単語ほんとにあるんですか？")
 
     # 使用済み単語を表示
-    st.write("これまでの単語:", " → ".join(st.session_state.used_hiragana))
+    st.write("これまでの単語:", " → ".join(used))
+    st.write("", " , ".join(hira))
