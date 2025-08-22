@@ -103,7 +103,7 @@ def in_dictionary(word: str) -> bool:
     tokens = list(tokenizer.tokenize(word))
     return len(tokens) == 1 and tokens[0].surface == word
 
-st.title("しりとり  V2.1")
+st.title("しりとり  V3.0")
 st.text("ひらがなで入力してください。")
 
 with st.form(key='ketu'):
