@@ -2,6 +2,7 @@ import streamlit as st
 import random
 from PIL import Image
 from janome.tokenizer import Tokenizer
+import re
 import pykakasi
 
 tokenizer = Tokenizer()
@@ -104,7 +105,18 @@ if "words" not in st.session_state:
 def in_dictionary(word: str) -> bool:
     tokens = list(tokenizer.tokenize(word))
     if len(tokens) == 1 and tokens[0].surface == word:
-        return tokens[0].dictionary_form != "*"
+        token = tokens[0]
+        # 未知語は dictionary_form が "*"
+        if token.dictionary_form == "*":
+            return False
+        # カタカナだけの単語で、辞書に無さそうな怪しいものを弾く
+        if re.fullmatch(r"[ァ-ヶー]+", word):
+            # 例: 同じ文字ばかり or 長すぎるカタカナは怪しい
+            if len(set(word)) == 1:  # ルルル, アアア など
+                return False
+            if len(word) > 10:       # 不自然に長いカタカナは怪しい
+                return False
+        return True
     return False
 
 st.title("しりとり  V5.0")
