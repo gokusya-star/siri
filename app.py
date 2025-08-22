@@ -1,6 +1,9 @@
 import streamlit as st
 import random
 from PIL import Image
+from janome.tokenizer import Tokenizer
+
+tokenizer = Tokenizer()
 
 #文字
 st.title("ごくしゃ")
@@ -96,6 +99,10 @@ if "words" not in st.session_state:
         'ぽにーてーる','ぽーる','ぽーたぶる'
     }
 
+def in_dictionary(word: str) -> bool:
+    tokens = list(tokenizer.tokenize(word))
+    return len(tokens) == 1 and tokens[0].surface == word
+
 st.title("しりとり  V2.1")
 st.text("ひらがなで入力してください。")
 
@@ -104,38 +111,41 @@ with st.form(key='ketu'):
     submit_bt = st.form_submit_button('送信')
 
     if submit_bt and hiragana_now:
-        last = st.session_state.hiragana_last
-        used = st.session_state.used_hiragana
-        words = st.session_state.words
+        if in_dictionary:
+            last = st.session_state.hiragana_last
+            used = st.session_state.used_hiragana
+            words = st.session_state.words
 
-        # 「ー」で終わる場合は一つ前の文字を採用
-        last_char = last[-2] if last[-1] == "ー" else last[-1]
+            # 「ー」で終わる場合は一つ前の文字を採用
+            last_char = last[-2] if last[-1] == "ー" else last[-1]
 
-        if hiragana_now[0] != last_char:
-            st.error("AI: 最初の文字が間違っていますよ。私の勝ちです。")
-        elif hiragana_now in used:
-            st.error("AI: その単語は既に使われていますよ。私の勝ちです。")
-        elif hiragana_now[-1] == "ん":
-            st.error("AI: それは「ん」で終わる単語ですよ。私の勝ちです。")
+            if hiragana_now[0] != last_char:
+                st.error("AI: 最初の文字が間違っていますよ。私の勝ちです。")
+            elif hiragana_now in used:
+                st.error("AI: その単語は既に使われていますよ。私の勝ちです。")
+            elif hiragana_now[-1] == "ん":
+                st.error("AI: それは「ん」で終わる単語ですよ。私の勝ちです。")
+            else:
+                # ユーザーの単語を追加
+                used.append(hiragana_now)
+                st.session_state.hiragana_last = hiragana_now
+
+                # AIのターン
+                last_char = hiragana_now[-2] if hiragana_now[-1] == "ー" else hiragana_now[-1]
+                found = False
+                for word in list(words):
+                    if word.startswith(last_char):
+                        if not word in used:
+                            st.success(f"AI: {word}")
+                            used.append(word)
+                            words.remove(word)
+                            st.session_state.hiragana_last = word
+                            found = True
+                            break
+                if not found:
+                    st.info("AI: 思いつきません。私の負けです。")
         else:
-            # ユーザーの単語を追加
-            used.append(hiragana_now)
-            st.session_state.hiragana_last = hiragana_now
+            st.error("AI: そんな単語ほんとにあるんですか？")
 
-            # AIのターン
-            last_char = hiragana_now[-2] if hiragana_now[-1] == "ー" else hiragana_now[-1]
-            found = False
-            for word in list(words):
-                if word.startswith(last_char):
-                    if not word in used:
-                        st.success(f"AI: {word}")
-                        used.append(word)
-                        words.remove(word)
-                        st.session_state.hiragana_last = word
-                        found = True
-                        break
-            if not found:
-                st.info("AI: 思いつきません。私の負けです。")
-
-# 使用済み単語を表示
-st.write("これまでの単語:", " → ".join(st.session_state.used_hiragana))
+    # 使用済み単語を表示
+    st.write("これまでの単語:", " → ".join(st.session_state.used_hiragana))
