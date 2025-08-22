@@ -111,7 +111,7 @@ with st.form(key='ketu'):
     submit_bt = st.form_submit_button('送信')
 
     if submit_bt and hiragana_now:
-        if in_dictionary:
+        if in_dictionary(hiragana_now):
             last = st.session_state.hiragana_last
             used = st.session_state.used_hiragana
             words = st.session_state.words
