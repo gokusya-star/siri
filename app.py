@@ -30,6 +30,7 @@ with st.form(key='form'):
 # セッション初期化
 if "used_hiragana" not in st.session_state:
     st.session_state.used_hiragana = ["しりとり"]
+if "hiragana" not in st.session_state:
     st.session_state.hiragana = ["しりとり"]
 if "hiragana_last" not in st.session_state:
     st.session_state.hiragana_last = "しりとり"
@@ -148,7 +149,7 @@ with st.form(key='ketu'):
             else:
                 # ユーザーの単語を追加
                 used.append(iuput_moji)
-                used.append(hiragana_now)
+                hira.append(hiragana_now)
                 st.session_state.hiragana_last = hiragana_now
 
                 # AIのターン
