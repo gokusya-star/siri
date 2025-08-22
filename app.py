@@ -109,12 +109,13 @@ st.title("しりとり  V4.0")
 st.text("ひらがなで入力してください。")
 
 with st.form(key='ketu'):
-    imp_moji = kks.convert(st.text_input('しりとり'))
-    hiragana_now = "".join([r['hira'] for r in imp_moji])
+    iuput_moji = st.text_input('しりとり')
+    cache = kks.convert(iuput_moji)
+    hiragana_now = "".join([r['hira'] for r in cache])
     submit_bt = st.form_submit_button('送信')
 
     if submit_bt and hiragana_now:
-        if in_dictionary(imp_moji):
+        if in_dictionary(iuput_moji):
             last = st.session_state.hiragana_last
             used = st.session_state.used_hiragana
             words = st.session_state.words
