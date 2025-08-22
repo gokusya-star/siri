@@ -105,7 +105,7 @@ def in_dictionary(word: str) -> bool:
     tokens = list(tokenizer.tokenize(word))
     return len(tokens) == 1 and tokens[0].surface == word
 
-st.title("しりとり  V4.0")
+st.title("しりとり  V4.2")
 st.text("ひらがなで入力してください。")
 
 with st.form(key='ketu'):
@@ -131,7 +131,7 @@ with st.form(key='ketu'):
                 st.error("AI: それは「ん」で終わる単語ですよ。私の勝ちです。")
             else:
                 # ユーザーの単語を追加
-                used.append(hiragana_now)
+                used.append(iuput_moji)
                 st.session_state.hiragana_last = hiragana_now
 
                 # AIのターン
