@@ -103,9 +103,11 @@ if "words" not in st.session_state:
 
 def in_dictionary(word: str) -> bool:
     tokens = list(tokenizer.tokenize(word))
-    return len(tokens) == 1 and tokens[0].surface == word
+    if len(tokens) == 1 and tokens[0].surface == word:
+        return tokens[0].dictionary_form != "*"
+    return False
 
-st.title("しりとり  V4.2")
+st.title("しりとり  V5.0")
 st.text("ひらがな、カタカナ、漢字のいずれかで入力してください。")
 
 with st.form(key='ketu'):
