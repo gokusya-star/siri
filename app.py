@@ -103,7 +103,7 @@ if "words" not in st.session_state:
         'ぺだる','ぺっとぼとる','ぺんてる',
         'ぽにーてーる','ぽーる','ぽーたぶる'
     }
-
+    word = "しりとり"
 def in_dictionary(word: str) -> bool:
     tokens = list(tokenizer.tokenize(word))
     if len(tokens) == 1 and tokens[0].surface == word:
@@ -125,7 +125,7 @@ st.title("しりとり  V5.1")
 st.text("ひらがな、カタカナ、漢字のいずれかで入力してください。")
 
 with st.form(key='ketu'):
-    iuput_moji = st.text_input('しりとり')
+    iuput_moji = st.text_input(word)
     cache = kks.convert(iuput_moji)
     hiragana_now = "".join([r['hira'] for r in cache])
     submit_bt = st.form_submit_button('送信')
