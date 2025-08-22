@@ -106,7 +106,7 @@ def in_dictionary(word: str) -> bool:
     return len(tokens) == 1 and tokens[0].surface == word
 
 st.title("しりとり  V4.2")
-st.text("ひらがなで入力してください。")
+st.text("ひらがな、カタカナ、漢字のいずれかで入力してください。")
 
 with st.form(key='ketu'):
     iuput_moji = st.text_input('しりとり')
