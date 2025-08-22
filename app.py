@@ -169,5 +169,5 @@ with st.form(key='ketu'):
             st.error("AI: そんな単語ほんとにあるんですか？")
 
     # 使用済み単語を表示
-    st.write("これまでの単語:", " → ".join(used))
-    st.write("", " , ".join(hira))
+    st.write("これまでの単語:", " → ".join(st.session_state.used_hiragana))
+    st.write("", " , ".join(st.session_state.hiragana))
