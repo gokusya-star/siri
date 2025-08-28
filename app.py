@@ -9,7 +9,7 @@ tokenizer = Tokenizer()
 kks = pykakasi.kakasi()
 
 #文字
-st.title("ごくしゃ")
+st.title("こんにちは")
 
 image = Image.open('タイトルなし.png')
 st.image(image, width=200)
@@ -17,7 +17,7 @@ st.image(image, width=200)
 with st.form(key='form'):
     name = st.text_input('名前')
 
-    slct = st.radio('ごくしゃのこと好き？',('好き','普通','嫌い'))
+    slct = st.radio('自分のこと好き？',('好き','普通','嫌い'))
 
     submit_btn = st.form_submit_button('送信')
     cancel_btn = st.form_submit_button('キャンセル')
