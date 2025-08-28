@@ -15,7 +15,7 @@ image = Image.open('タイトルなし.png')
 st.image(image, width=200)
 
 with st.form(key='form'):
-    name = st.text_input('名前')
+    name = st.text_input('あなたの名前は？')
 
     slct = st.radio('自分のこと好き？',('好き','普通','嫌い'))
 
